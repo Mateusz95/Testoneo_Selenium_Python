@@ -38,6 +38,20 @@ class MainTests(unittest.TestCase):
         expected_after_login_header = 'Your account'
         self.assertEqual(expected_after_login_header, after_login_header_text, f'Expected differ header after login')
 
+    def test_tshirt_product(self):
+        driver = self.driver
+        url = 'https://autodemo.testoneo.com/en/men/1-1-hummingbird-printed-t-shirt.html'
+        driver.get(url)
+        expected_product_title = 'HUMMINGBIRD PRINTED T-SHIRT'
+        product_title = driver.find_element_by_xpath('//*[@id="main"]/div[1]/div[2]/h1')
+        product_title_text = product_title.text
+        self.assertEqual(expected_product_title, product_title_text, f'Expected product title is differ on page {url}')
+        expected_price = '23.52'
+        product_price = driver.find_element_by_xpath('//*[@id="main"]/div[1]/div[2]/div[1]/div[2]/div/span[1]')
+        product_price_content = product_price.get_attribute('content')
+        # print(product_price_content) #check what is inside content attribute
+        self.assertEqual(expected_price, product_price_content, f'Price is differ than expected on page {url}')
+
     @classmethod
     def tearDownClass(self):
         self.driver.quit()
