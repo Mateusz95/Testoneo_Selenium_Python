@@ -1,3 +1,4 @@
+import time
 import unittest
 
 from selenium import webdriver
@@ -16,6 +17,26 @@ class MainTests(unittest.TestCase):
         header_text = header_check.text
         expected_header = 'Log in to your account'
         self.assertEqual(expected_header, header_text, f'Expected different header on page {url}')
+
+    def test_login(self):
+        driver = self.driver
+        url = 'https://autodemo.testoneo.com/en/login?back=my-account'
+        driver.get(url)
+        login_form_input = driver.find_element_by_xpath('//*[@id="login-form"]/section/div[1]/div[1]/input')
+        login_form_input.clear()
+        login_text = 'johnyczorny@gmail.com'
+        login_form_input.send_keys(login_text)
+        password_form_input = driver.find_element_by_xpath('//*[@id="login-form"]/section/div[2]/div[1]/div/input')
+        password_form_input.clear()
+        password_text = 'johny123'
+        password_form_input.send_keys(password_text)
+        signin_button = driver.find_element_by_xpath('//*[@id="submit-login"]')
+        signin_button.click()
+        time.sleep(2)
+        after_login_header = driver.find_element_by_xpath('//*[@id="main"]/header/h1')
+        after_login_header_text = after_login_header.text
+        expected_after_login_header = 'Your account'
+        self.assertEqual(expected_after_login_header, after_login_header_text, f'Expected differ header after login')
 
     @classmethod
     def tearDownClass(self):
